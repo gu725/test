@@ -1,0 +1,653 @@
+button {
+    margin-top: 10%; /* 或使用适合的相对单位 */
+    margin-left: 20%; /* 或使用适合的相对单位 */
+    position: relative; /* 更改为相对定位 */
+}
+.nivoSlider img {
+    width: 100%; /* 使图片宽度相对于其父元素 */
+    height: auto; /* 保持宽高比 */
+}
+
+body{
+	background-image: url(./myimages/bg01.jpg);
+	background-repeat:repeat;
+	color: #000033;
+	font-family:Verdana,Arial,sans-serif;
+}
+body * { 
+	box-sizing: border-box; 
+}
+header {
+    color: #000000;
+    text-align: left;
+    height: 15vh; /* 使用视口高度（vh）作为相对单位 */
+    display: flex;
+}
+
+h1 {
+    padding: 2% 1%; /* 使用百分比设置内边距 */
+    filter: drop-shadow(0.35rem 0.35rem 0.2rem rgb(66, 66, 68));
+}
+
+
+nav {
+    background-image: url(./myimages/bg04.jpg);
+    background-size: cover; /* 使用 cover 使背景图适应容器 */
+    font-weight: bolder;
+    text-align: left;
+    padding: 5%; /* 使用百分比设置内边距 */
+    float: left;
+    height: 60%; /* 高度自动适应内容 */
+    width: 15%; /* 使用百分比宽度 */
+    margin-left: 8%; /* 使用百分比边距 */
+    box-shadow:
+        1px 1px 0 0 hsl(0, 9%, 30%),
+        2px 2px 0 0 hsl(0, 9%, 30%),
+        3px 3px 0 0 hsl(0, 9%, 30%),
+        4px 4px 0 0 hsl(0, 9%, 30%),
+        5px 5px 0 0 hsl(0, 9%, 30%);
+}
+
+nav a{ 
+	text-decoration: none;
+	display: block;
+	margin-top: 15px;
+	filter: drop-shadow(0.35rem 0.35rem 0.2rem rgb(66, 66, 68));
+}
+nav a:link{
+	color:#000033;
+}
+nav a:visited{
+	color: #000033;
+}
+nav a:hover{
+	color: #FFFFFF;
+}
+main {
+    margin-left: 25%; /* 使用百分比，适应不同屏幕 */
+    margin-right: 15%; /* 使用百分比，适应不同屏幕 */
+    padding: 2%; /* 使用百分比内边距 */
+}
+
+h2 {
+    margin-top: 0;
+    padding-top: 2%; /* 使用百分比内边距 */
+}
+
+h3 {
+    text-align: center;
+}
+h4 {
+    width: 30%;                /* 使用百分比，适应不同屏幕 */
+    height: auto;             /* 高度设置为自动，以适应内容 */
+    margin-top: 2%;           /* 使用百分比，适应不同屏幕 */
+    margin-bottom: 2%;        /* 使用百分比，适应不同屏幕 */
+    padding-top: 3%;          /* 使用百分比内边距 */
+    text-align: center;
+    background-image: url(./myimages/img000.jpg);
+    background-size: cover;
+}
+
+footer{
+	font-size:.60em;
+	font-style: oblique;
+	text-align: center;
+	padding: 10px;
+	background-image: url(./myimages/bg05.jpg);
+	background-size: 100% 100%;
+	margin-top: 40px;
+}
+#img01{
+	background-image: url(./myimages/img004.jpg);
+	background-size: 100% 100%;
+	height: 80px;
+	width: 380px;
+	margin-top: 30px;
+	filter: drop-shadow(0.35rem 0.35rem 0.2rem rgb(66, 66, 68));
+}
+#wrapper{
+	background-image: url(./myimages/bg02.jpg);
+	background-size: 100% 100%;
+	width:80%;
+	position:absolute;
+	/* 水平垂直居中 */
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	max-width: 900px;
+	min-width: 900px;
+	height: 100%;
+	padding: 20px;
+	}
+@media only screen and (max-height: 1000px) {
+	#wrapper{
+		background-image: url(./myimages/bg02.jpg);
+		background-size: 100% 100%;
+		width:80%;
+		position:absolute;
+		/* 水平垂直居中 */
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		margin: 10px auto;
+		max-width: 950px;
+		min-width: 900px;
+		height: 100%;
+		padding: 20px;
+		}
+}
+#content1{
+	background-image: url(./myimages/img005.jpg);
+	background-size: 100% 100%;
+	width: 560px;
+	height: 350px;
+	padding: 20px;
+}
+#content1_2{
+	;
+}
+#content2{
+	width: 500px;
+	height: 290px;
+	margin: 10px;
+	overflow-y: auto;
+}
+#content3{
+	width: 600px;
+	height: 650px;
+	overflow-y:scroll;
+	overflow-x: hidden;
+}
+#content3 img{
+	width: 560px;
+	height: 300px;
+}
+
+#content3 audio{
+	margin-left: 130px;
+	margin-bottom: 30px;
+}
+
+
+#content3 h5{
+	display: none;
+	background-image: url(./myimages/bg03.jpg);
+	background-size: 100% 100%;
+	margin-top: 0;
+	height: 300px;
+	width: 560px;
+	padding: 25px;
+}
+
+#content3 #content5:hover h3{
+	color:brown;
+
+}
+
+#contain4
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.swiper-container {
+    width: 100%;
+    height: 500px;
+    padding-top: 120px;
+
+}
+
+
+
+
+
+/* 分页1 - 骚话 */
+.top-left-text {
+    position: absolute;
+    top: 10px; /* 距离顶部10px */
+    left: 10px; /* 距离左侧10px */
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5); /* 黑色半透明背景 */
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+
+.swiper-container-lovewry1 {
+    width: 80vw;
+}
+
+.page1-lovewry1 img {
+    width: 90%; /* 设置为相对宽度，50% 可根据需要调整 */
+    max-width: 400px; /* 可选：设置最大宽度 */
+    border-radius: 0;
+    margin-bottom: 20px;
+}
+
+.page1 .right {
+    border-bottom: 1px solid black;
+    line-height: 50px;
+    font-size: 15px;
+}
+
+.page1 .cat {
+    width: 100%; /* 改为相对宽度 */
+    max-width: 400px; /* 设置最大宽度 */
+}
+
+.catText {
+    font-size: 13px;
+    color: gray;
+}
+
+.page1-lovewry1 {
+    position: relative; /* 保证内部元素绝对定位相对于此容器 */
+}
+
+.swiper-slide {
+    position: relative; /* 让滑块成为相对定位的容器 */
+}
+
+.left-btn, .right-btn {
+    position: absolute;
+    bottom: 10%; /* 调整为相对底部的百分比 */
+    left: 50%; /* 水平居中 */
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 100; /* 保证按钮在最前面 */
+}
+
+.left-btn {
+    left: 50%; /* 调整为滑块左边，使用百分比 */
+}
+
+.left-btn:hover, .right-btn:hover {
+    background-color: #2980b9; /* 鼠标悬停效果 */
+}
+
+
+
+
+/* 分页2 - 时间轴 */
+.page2 {
+    background-color: rgba(255, 255, 255, 0); /* 设置为完全透明 */
+}
+
+.swiper-container-lovewry2 .swiper-wrapper .swiper-slide {
+    width: 75%; /* 使用百分比，适应不同屏幕 */
+    border-radius: 0;
+}
+
+.page2-box {
+    width: 100%; /* 使用百分比，适应不同屏幕 */
+    height: 97%; /* 高度设置为自动，以适应内容 */
+    padding-top: 0; /* 使用百分比内边距 */
+}
+
+.page2-box img {
+    width: 100%; /* 使用百分比，适应父容器 */
+    height: auto; /* 高度设置为自动，以适应图片比例 */
+    max-width: 100%; /* 确保图片不会超出容器的宽度 */
+    display: block; /* 防止图片与文本对齐 */
+    margin: 0 auto; /* 让图片水平居中 */
+}
+
+
+
+
+
+
+
+#content5{
+
+	width:fit-content;
+	margin: 0 auto;
+}
+#content6{
+	width: 560px;
+	height: 640px;
+}
+.video-player {
+    width: 100%; /* 或者指定一个固定的像素值，例如 width: 640px; */
+    height: auto; /* 保持视频的宽高比 */
+    max-width: 640px; /* 最大宽度，确保视频在大屏幕上不会过大 */
+}
+
+
+#content7{
+	width: 580px;
+	height: 640px;
+	overflow-y:scroll;
+	overflow-x: hidden;
+}
+#content7 img{
+	width: 440px;
+	margin: 10px auto;
+}
+
+#content8 {
+    width: 100%; /* 或其他适合的百分比 */
+    max-width: 700px; /* 限制最大宽度 */
+    height: auto; /* 自适应高度 */
+    overflow-x: hidden;
+}/* 容器大小 */
+
+#content8 img {
+    width: 80%; /* 让图片宽度占满父元素 */
+    height: auto; /* 保持比例 */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.8);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    border-radius: 0px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+a:hover {
+    color: rgb(0, 130, 255);
+    text-shadow: 0 0 5px white;
+}
+
+.swiper-container {
+    width: 100%; /* 宽度占满父元素 */
+    height: 65vh; /* 高度为视口高度的60% */
+    padding-top: 0; /* 根据需要调整顶部填充 */
+}
+
+
+#content9{
+	width: 580px;
+	height: 640px;
+	background-image: url(./myimages/img006.jpg);
+	background-position: -320px ;
+	filter: grayscale(20%);
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction:column;
+}
+#content9 img{
+	position: relative;
+	height: 80px;
+	width: 80px;
+	border-radius: 60%;
+	margin-top: 50px;
+	margin-left: 0;
+	left: 90px;
+}
+#content9 h4{
+	background-image: none;
+	margin: 0 auto;
+	padding: 0;
+	width: fit-content;
+	height:fit-content;
+}
+audio {
+    width: 45%; /* 设置为你想要的宽度，或者使用百分比，比如 100% */
+}
+
+
+
+#trailhero{
+	background-image: url(./myimages/img002.jpg);
+	background-repeat: no-repeat;
+	background-size:100% 100%;
+	height:300px;
+	margin-left: 240px;
+	margin-right: 100px;
+	margin-bottom: 0;
+}
+#trailhero2{
+	background-image: url(trail.jpg);
+	background-repeat: no-repeat;
+	background-size:100% 100%;
+	height:300px;
+	margin-left: 170px;
+	margin-bottom: 0;
+}
+#sqhl{
+	background-image: url(sqhl.jpg);
+	margin-bottom: 20px;
+	margin-left: 70px;
+	height:500px;
+	background-repeat: no-repeat;
+	background-size: contain;
+	}
+
+
+	.nivoSlider {   /*轮换图片的大小*/
+	position: relative;
+	width: 500px;
+	height: 300px;
+	overflow: hidden;
+	margin: 0 auto;
+}
+
+.nivoSlider .slide{
+	width: 500px;
+	height: 300px;
+	position: absolute;
+}
+
+#mp3{
+	height: 80px;
+	width: 80px;
+	left: 650px;
+	background-image: url(./myimages/img501.jpg);
+	background-size: 120% 120%;
+	background-position: center;
+	position:relative;
+	margin-top: -360px;
+	border-radius: 70%;
+	filter: drop-shadow(0.25rem 0.25rem 0.2rem rgb(66, 66, 68));
+	animation: small 0.3s;
+	animation-fill-mode:forwards;
+	animation-timing-function:linear;
+	z-index: 20;
+}
+
+#mp3:hover{
+	animation: big 0.3s !important;
+	animation-fill-mode:forwards !important;
+}
+
+
+#mp3_hide{
+	position:relative;
+	height: 38px;
+	width: 130px;
+	left: 610px;
+	margin-top: -42px;
+	overflow: hidden;
+}
+#mp3_title{
+	position: relative;
+	margin-top: 7px;
+	height: 29px;
+	width: 90px;
+	padding: 4px;
+	font: size 2px;
+	text-align: center;
+	filter: drop-shadow(0.25rem 0.25rem 0.2rem rgb(66, 66, 68));
+}
+
+
+@keyframes big {
+    0%      {    }
+    100%    {   transform:scale(1.05);}
+}
+
+@keyframes small {
+    0%      {   transform:scale(1.05);  }
+    100%    {  }
+}
+
+@keyframes lines {
+    0%      {  transform:scale(1.05);  }
+    50%    {  transform:scale(1); }
+	100%{ transform:scale(1.05);}
+}
+
+@keyframes rotate {
+	0%{transform:rotate(0deg);}
+   100%{
+   transform:rotate(360deg);
+   }
+}
+@-webkit-keyframes move_rotate{
+	0%{
+	-webkit-transform:rotate(0deg);
+	}
+	25%{
+	-webkit-transform:rotate(90deg);
+	}
+	50%{
+	-webkit-transform:rotate(180deg);
+	}
+	75%{
+	-webkit-transform:rotate(270deg);
+	}
+	100%{
+	-webkit-transf
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url(./myimages/bg01.jpg);
+    background-repeat: repeat;
+    color: #000033;
+    font-family: Verdana, Arial, sans-serif;
+}
+
+header {
+    color: #000000;
+    text-align: left;
+    height: 15vh; /* 使用视口高度（vh）作为相对单位 */
+    display: flex;
+}
+
+h1 {
+    padding: 2% 1%; /* 使用百分比设置内边距 */
+    filter: drop-shadow(0.35rem 0.35rem 0.2rem rgb(66, 66, 68));
+}
+
+nav {
+    background-image: url(./myimages/bg04.jpg);
+    background-size: cover; /* 使用 cover 使背景图适应容器 */
+    font-weight: bolder;
+    text-align: left;
+    padding: 5%; /* 使用百分比设置内边距 */
+    float: left;
+    height: auto; /* 高度自动适应内容 */
+    width: 15%; /* 使用百分比宽度 */
+    margin-left: 2%; /* 使用百分比边距 */
+    box-shadow:
+        1px 1px 0 0 hsl(0, 9%, 30%),
+        2px 2px 0 0 hsl(0, 9%, 30%),
+        3px 3px 0 0 hsl(0, 9%, 30%),
+        4px 4px 0 0 hsl(0, 9%, 30%),
+        5px 5px 0 0 hsl(0, 9%, 30%);
+}
+
+nav a {
+    text-decoration: none;
+    display: block;
+    margin-top: 15px;
+    filter: drop-shadow(0.35rem 0.35rem 0.2rem rgb(66, 66, 68));
+}
+
+nav a:link, nav a:visited {
+    color: #000033;
+}
+
+nav a:hover {
+    color: #FFFFFF;
+}
+
+main {
+    margin-left: 25%; /* 使用百分比，适应不同屏幕 */
+    margin-right: 15%; /* 使用百分比，适应不同屏幕 */
+    padding: 2%; /* 使用百分比内边距 */
+}
+
+h2 {
+    margin-top: 0;
+    padding-top: 2%; /* 使用百分比内边距 */
+}
+
+h3 {
+    text-align: center;
+}
+
+h4 {
+    width: 30%;                /* 使用百分比，适应不同屏幕 */
+    height: auto;             /* 高度设置为自动，以适应内容 */
+    margin-top: 2%;           /* 使用百分比，适应不同屏幕 */
+    margin-bottom: 2%;        /* 使用百分比，适应不同屏幕 */
+    padding-top: 3%;          /* 使用百分比内边距 */
+    text-align: center;
+    background-image: url(./myimages/img005.jpg);
+    background-size: cover;
+}
+
+footer {
+    font-size: .60em;
+    font-style: oblique;
+    text-align: center;
+    padding: 10px;
+    background-image: url(./myimages/bg05.jpg);
+    background-size: 100% 100%;
+    margin-top: 40px;
+}
+
+#wrapper {
+    min-height: 100vh;
+    max-height: 100vh;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100vw;   /* 视口宽度 */
+    height: 100vh;  /* 视口高度 */
+    overflow: hidden; /* 防止滚动条出现 */
+}
