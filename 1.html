@@ -1,0 +1,695 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>
+		新年快乐
+	</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="theme-color" content="#000000">
+	<meta name="msapplication-TileColor" content="#000000">
+	<style>
+		/* cyrillic */
+		@font-face {
+			font-family: 'Russo One';
+			font-style: normal;
+			font-weight: 400;
+			src: url(https://fonts.gstatic.com/s/russoone/v14/Z9XUDmZRWg6M1LvRYsHOy8mJrrg.woff2) format('woff2');
+			unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+		}
+
+		/* latin-ext */
+		@font-face {
+			font-family: 'Russo One';
+			font-style: normal;
+			font-weight: 400;
+			src: url(https://fonts.gstatic.com/s/russoone/v14/Z9XUDmZRWg6M1LvRYsHOwcmJrrg.woff2) format('woff2');
+			unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+		}
+
+		/* latin */
+		@font-face {
+			font-family: 'Russo One';
+			font-style: normal;
+			font-weight: 400;
+			src: url(https://fonts.gstatic.com/s/russoone/v14/Z9XUDmZRWg6M1LvRYsHOz8mJ.woff2) format('woff2');
+			unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+		}
+	</style>
+	<style>
+		* {
+			position: relative;
+			box-sizing: border-box
+		}
+
+		html,
+		body {
+			height: 100%
+		}
+
+		html {
+			background-color: #000
+		}
+
+		body {
+			overflow: hidden;
+			color: rgba(255, 255, 255, 0.5);
+			font-family: "Russo One", arial, sans-serif;
+			line-height: 1.25;
+			letter-spacing: .06em
+		}
+
+		.hide {
+			opacity: 0;
+			visibility: hidden
+		}
+
+		.remove {
+			display: none !important
+		}
+
+		.blur {
+			filter: blur(12px)
+		}
+
+		.container {
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			left: 0%;
+			top: 0%;
+		}
+
+		.loading-init {
+			width: 100%;
+			align-self: center;
+			text-align: center;
+			text-transform: uppercase
+		}
+
+		.loading-init__header {
+			font-size: 2.2em
+		}
+
+		.loading-init__status {
+			margin-top: 1em;
+			font-size: .8em;
+			opacity: .75
+		}
+
+		.stage-container {
+			overflow: hidden;
+			box-sizing: initial;
+			border: 1px solid #222;
+			margin: -1px
+		}
+
+		@media(max-width:840px) {
+			.stage-container {
+				border: 0;
+				margin: 0
+			}
+		}
+
+		.canvas-container {
+			width: 100%;
+			height: 100%;
+			transition: filter .3s
+		}
+
+		.canvas-container canvas {
+			position: absolute;
+			mix-blend-mode: lighten;
+			transform: translateZ(0)
+		}
+
+		.controls {
+			position: absolute;
+			top: 0;
+			width: 100%;
+			padding-bottom: 50px;
+			display: flex;
+			justify-content: space-between;
+			transition: opacity .3s, visibility .3s
+		}
+
+		@media(min-width:840px) {
+			.controls {
+				visibility: visible
+			}
+
+			.controls.hide:hover {
+				opacity: 1
+			}
+		}
+
+		.menu {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-color: rgba(0, 0, 0, 0.42);
+			transition: opacity .3s, visibility .3s
+		}
+
+		.menu__inner-wrap {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			transition: opacity .3s
+		}
+
+		.menu__header {
+			margin-top: auto;
+			margin-bottom: 8px;
+			padding-top: 16px;
+			font-size: 2em;
+			text-transform: uppercase
+		}
+
+		.menu__subheader {
+			margin-bottom: auto;
+			padding-bottom: 12px;
+			font-size: .86em;
+			opacity: .8
+		}
+
+		.menu form {
+			width: 100%;
+			max-width: 400px;
+			padding: 0 10px;
+			overflow: auto;
+			-webkit-overflow-scrolling: touch
+		}
+
+		.menu .form-option {
+			display: flex;
+			align-items: center;
+			margin: 16px 0;
+			transition: opacity .3s
+		}
+
+		.menu .form-option label {
+			display: block;
+			width: 50%;
+			padding-right: 12px;
+			text-align: right;
+			text-transform: uppercase;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none
+		}
+
+		.menu .form-option--select select {
+			display: block;
+			width: 50%;
+			height: 30px;
+			font-size: 1rem;
+			font-family: "Russo One", arial, sans-serif;
+			color: rgba(255, 255, 255, 0.5);
+			letter-spacing: .06em;
+			background-color: transparent;
+			border: 1px solid rgba(255, 255, 255, 0.5)
+		}
+
+		.menu .form-option--select select option {
+			background-color: black
+		}
+
+		.menu .form-option--checkbox input {
+			display: block;
+			width: 26px;
+			height: 26px;
+			margin: 0;
+			opacity: .5
+		}
+
+		@media(max-width:840px) {
+
+			.menu .form-option select,
+			.menu .form-option input {
+				outline: 0
+			}
+		}
+
+		.close-menu-btn {
+			position: absolute;
+			top: 0;
+			right: 0
+		}
+
+		.btn {
+			opacity: .16;
+			width: 50px;
+			height: 50px;
+			display: flex;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			cursor: default;
+			transition: opacity .3s
+		}
+
+		.btn--bright {
+			opacity: .5
+		}
+
+		@media(min-width:840px) {
+			.btn:hover {
+				opacity: .32
+			}
+
+			.btn--bright:hover {
+				opacity: .75
+			}
+		}
+
+		.btn svg {
+			display: block;
+			margin: auto
+		}
+
+		.credits {
+			margin-top: auto;
+			margin-bottom: 10px;
+			padding-top: 6px;
+			font-size: .8em;
+			opacity: .75;
+			text-align: center
+		}
+
+		.credits a {
+			color: rgba(255, 255, 255, 0.5);
+			text-decoration: none
+		}
+
+		.credits a:hover,
+		.credits a:active {
+			color: rgba(255, 255, 255, 0.75);
+			text-decoration: underline
+		}
+
+		.help-modal {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			visibility: hidden;
+			transition-property: visibility;
+			transition-duration: .25s
+		}
+
+		.help-modal__overlay {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			opacity: 0;
+			transition-property: opacity;
+			transition-timing-function: ease-in;
+			transition-duration: .25s
+		}
+
+		.help-modal__dialog {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			max-width: 400px;
+			max-height: calc(100vh - 100px);
+			margin: 10px;
+			padding: 20px;
+			border-radius: .3em;
+			background-color: rgba(0, 0, 0, 0.4);
+			opacity: 0;
+			transform: scale(0.9, 0.9);
+			transition-property: opacity, transform;
+			transition-timing-function: ease-in;
+			transition-duration: .25s
+		}
+
+		@media(min-width:840px) {
+			.help-modal__dialog {
+				font-size: 1.25rem;
+				max-width: 500px
+			}
+		}
+
+		.help-modal__header {
+			font-size: 1.75em;
+			text-transform: uppercase;
+			text-align: center
+		}
+
+		.help-modal__body {
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
+			margin: 1em 0;
+			padding: 1em 0;
+			border-top: 1px solid rgba(255, 255, 255, 0.25);
+			border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+			line-height: 1.5;
+			color: rgba(255, 255, 255, 0.75)
+		}
+
+		.help-modal__close-btn {
+			flex-shrink: 0;
+			outline: 0;
+			border: 0;
+			border-radius: 2px;
+			padding: .25em .75em;
+			margin-top: .36em;
+			font-family: "Russo One", arial, sans-serif;
+			font-size: 1em;
+			color: rgba(255, 255, 255, 0.5);
+			text-transform: uppercase;
+			letter-spacing: .06em;
+			background-color: rgba(255, 255, 255, 0.25);
+			transition: color .3s, background-color .3s
+		}
+
+		.help-modal__close-btn:hover,
+		.help-modal__close-btn:active,
+		.help-modal__close-btn:focus {
+			color: #FFF;
+			background-color: #09F
+		}
+
+		.help-modal.active {
+			visibility: visible;
+			transition-duration: .4s
+		}
+
+		.help-modal.active .help-modal__overlay {
+			opacity: 1;
+			transition-timing-function: ease-out;
+			transition-duration: .4s
+		}
+
+		.help-modal.active .help-modal__dialog {
+			opacity: 1;
+			transform: scale(1, 1);
+			transition-timing-function: ease-out;
+			transition-duration: .4s
+		}
+	</style>
+
+	<script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+		var getMsg = "";
+window.onload = function() {
+    let url = window.location.href;
+    let p = url.split('?')[1];
+    let params = new URLSearchParams(p);
+    let txtParams = params.get('txt');
+
+    if ("" != txtParams && "null" != txtParams && txtParams != undefined) {
+        const msg = getDecode(txtParams)
+        getMsg = msg;
+    } else {
+        getMsg = "点击屏幕放烟花。\n新年快乐，龙筱清。\n过去的就让它过去吧。\n新的一年里，希望你天天开心！\n2025年，我们都会上岸！";
+    }
+
+    setTimeout(function() {
+        typeWriter();
+    }, "3000");
+}
+
+function typeWriter() {
+    const targetText = getMsg;
+    let currentIndex = 0;
+    const txt = document.getElementById("txt");
+    txt.innerHTML = '';
+
+    function addChar() {
+        if (currentIndex < targetText.length) {
+            txt.innerHTML += targetText.charAt(currentIndex);
+            currentIndex++;
+            setTimeout(addChar, 300);
+        }
+    }
+
+    addChar();
+}
+
+
+		function setText() {
+
+			if ("" !== getMsg) {
+
+				var nowText = $("#txt").html();
+
+				if (getMsg.length > nowText.length) {
+					$("#txt").html(getMsg.substring(0, nowText.length + 1));
+				}
+
+
+			}
+		}
+
+		function getDecode(str) {
+			return decodeURIComponent(atob(str).split('').map(function (c) {
+				return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+			}).join(''));
+		}
+	</script>
+</head>
+
+<body>
+	<!-- partial:index.partial.html -->
+	<!-- SVG Spritesheet -->
+	<div style="height: 0; width: 0; position: absolute; visibility: hidden;">
+		<svg xmlns="http://www.w3.org/2000/svg">
+			<symbol id="icon-play" viewBox="0 0 24 24">
+				<path d="M8 5v14l11-7z" />
+			</symbol>
+			<symbol id="icon-pause" viewBox="0 0 24 24">
+				<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+			</symbol>
+			<symbol id="icon-close" viewBox="0 0 24 24">
+				<path
+					d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+			</symbol>
+			<symbol id="icon-settings" viewBox="0 0 24 24">
+				<path
+					d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
+			</symbol>
+			<symbol id="icon-sound-on" viewBox="0 0 24 24">
+				<path
+					d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+			</symbol>
+			<symbol id="icon-sound-off" viewBox="0 0 24 24">
+				<path
+					d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+			</symbol>
+		</svg>
+	</div>
+	<!-- App -->
+	<div class="container">
+		<div class="loading-init">
+			<div class="loading-init__header">
+				<!-- 加载中 -->
+			</div>
+			<div class="loading-init__status">
+				<!-- 正在装配烟花 -->
+			</div>
+		</div>
+		<div class="stage-container remove">
+			<div class="canvas-container">
+				<canvas id="trails-canvas">
+				</canvas>
+				<canvas id="main-canvas">
+				</canvas>
+			</div>
+			<div class="controls">
+				<div class="btn pause-btn">
+					<svg fill="white" width="24" height="24">
+						<use href="#icon-pause" xlink:href="#icon-pause">
+						</use>
+					</svg>
+				</div>
+				<div class="btn sound-btn">
+					<svg fill="white" width="24" height="24">
+						<use href="#icon-sound-off" xlink:href="#icon-sound-off">
+						</use>
+					</svg>
+				</div>
+				<div class="btn settings-btn" style="pointer-events: none;">
+					<svg fill="white" width="24" height="24">
+						<use href="#icon-settings" xlink:href="#icon-settings">
+						</use>
+					</svg>
+				</div>
+			</div>
+			<div class="menu hide">
+				<div class="menu__inner-wrap">
+					<div class="btn btn--bright close-menu-btn">
+						<svg fill="white" width="24" height="24">
+							<use href="#icon-close" xlink:href="#icon-close">
+							</use>
+						</svg>
+					</div>
+					<div class="menu__header">
+						设置
+					</div>
+					<div class="menu__subheader">
+						若想了解更多信息 请点击任意标签
+					</div>
+					<form>
+						<div class="form-option form-option--select">
+							<label class="shell-type-label">
+								烟花类型
+							</label>
+							<select class="shell-type">
+							</select>
+						</div>
+						<div class="form-option form-option--select">
+							<label class="shell-size-label">
+								烟花大小
+							</label>
+							<select class="shell-size">
+							</select>
+						</div>
+						<div class="form-option form-option--select">
+							<label class="quality-ui-label">
+								画质
+							</label>
+							<select class="quality-ui">
+							</select>
+						</div>
+						<div class="form-option form-option--select">
+							<label class="sky-lighting-label">
+								照亮天空
+							</label>
+							<select class="sky-lighting">
+							</select>
+						</div>
+						<div class="form-option form-option--select">
+							<label class="scaleFactor-label">
+								缩放
+							</label>
+							<select class="scaleFactor">
+							</select>
+						</div>
+						<div class="form-option form-option--checkbox">
+							<label class="auto-launch-label">
+								自动放烟花
+							</label>
+							<input class="auto-launch" type="checkbox" />
+						</div>
+						<div class="form-option form-option--checkbox form-option--finale-mode">
+							<label class="finale-mode-label">
+								同时放更多的烟花
+							</label>
+							<input class="finale-mode" type="checkbox" />
+						</div>
+						<div class="form-option form-option--checkbox">
+							<label class="hide-controls-label">
+								隐藏控制按钮
+							</label>
+							<input class="hide-controls" type="checkbox" />
+						</div>
+						<div class="form-option form-option--checkbox form-option--fullscreen">
+							<label class="fullscreen-label">
+								全屏
+							</label>
+							<input class="fullscreen" type="checkbox" />
+						</div>
+						<div class="form-option form-option--checkbox">
+							<label class="long-exposure-label">
+								保留烟花的火花
+							</label>
+							<input class="long-exposure" type="checkbox" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="help-modal">
+			<div class="help-modal__overlay">
+			</div>
+			<div class="help-modal__dialog">
+				<div class="help-modal__header">
+				</div>
+				<div class="help-modal__body">
+				</div>
+				<button type="button" class="help-modal__close-btn">
+					关闭
+				</button>
+			</div>
+		</div>
+	</div>
+	<!-- partial -->
+	<script>
+		!function (e) { "use strict"; var n = { fullscreenEnabled: 0, fullscreenElement: 1, requestFullscreen: 2, exitFullscreen: 3, fullscreenchange: 4, fullscreenerror: 5 }, r = ["webkitFullscreenEnabled", "webkitFullscreenElement", "webkitRequestFullscreen", "webkitExitFullscreen", "webkitfullscreenchange", "webkitfullscreenerror"], l = ["mozFullScreenEnabled", "mozFullScreenElement", "mozRequestFullScreen", "mozCancelFullScreen", "mozfullscreenchange", "mozfullscreenerror"], u = ["msFullscreenEnabled", "msFullscreenElement", "msRequestFullscreen", "msExitFullscreen", "MSFullscreenChange", "MSFullscreenError"], t = "undefined" != typeof window && void 0 !== window.document ? window.document : {}, s = "fullscreenEnabled" in t && Object.keys(n) || r[0] in t && r || l[0] in t && l || u[0] in t && u || [], c = { requestFullscreen: function (e) { return e[s[n.requestFullscreen]]() }, requestFullscreenFunction: function (e) { return e[s[n.requestFullscreen]] }, get exitFullscreen() { return t[s[n.exitFullscreen]].bind(t) }, addEventListener: function (e, r, l) { return t.addEventListener(s[n[e]], r, l) }, removeEventListener: function (e, r) { return t.removeEventListener(s[n[e]], r) }, get fullscreenEnabled() { return Boolean(t[s[n.fullscreenEnabled]]) }, set fullscreenEnabled(e) { }, get fullscreenElement() { return t[s[n.fullscreenElement]] }, set fullscreenElement(e) { }, get onfullscreenchange() { return t[("on" + s[n.fullscreenchange]).toLowerCase()] }, set onfullscreenchange(e) { return t[("on" + s[n.fullscreenchange]).toLowerCase()] = e }, get onfullscreenerror() { return t[("on" + s[n.fullscreenerror]).toLowerCase()] }, set onfullscreenerror(e) { return t[("on" + s[n.fullscreenerror]).toLowerCase()] = e } }; e.fscreen = c }(window);
+	</script>
+	<script>
+		const Ticker = function (t) { "use strict"; const e = { addListener: function (t) { if ("function" != typeof t) throw "Ticker.addListener() requires a function reference passed for a callback."; s.push(t), i || (i = !0, o()) } }; let i = !1, n = 0, s = []; function o() { t.requestAnimationFrame ? requestAnimationFrame(a) : webkitRequestAnimationFrame(a) } function a(e) { let i = e - n; n = e, i < 0 ? i = 17 : i > 68 && (i = 68), s.forEach(e => e.call(t, i, i / 16.6667)), o() } return e }(window), Stage = function (t, e, i) { "use strict"; let n = 0; function s(i) { "string" == typeof i && (i = e.getElementById(i)), this.canvas = i, this.ctx = i.getContext("2d"), this.canvas.style.touchAction = "none", this.speed = 1, this.dpr = s.disableHighDPI ? 1 : (t.devicePixelRatio || 1) / (this.ctx.backingStorePixelRatio || 1), this.width = i.width, this.height = i.height, this.naturalWidth = this.width * this.dpr, this.naturalHeight = this.height * this.dpr, this.width !== this.naturalWidth && (this.canvas.width = this.naturalWidth, this.canvas.height = this.naturalHeight, this.canvas.style.width = this.width + "px", this.canvas.style.height = this.height + "px"); const n = e.location.hostname; if (["blackdiamondfireworks.de"].some(t => n.includes(t))) { setTimeout(() => { e.body.innerHTML = '<style>\n\t\t\t\t\t\tbody { background-color: #000; padding: 20px; text-align: center; color: #ddd; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: visible; }\n\t\t\t\t\t\th1 { font-size: 1.2em;}\n\t\t\t\t\t\tp { margin-top: 1em; max-width: 36em; }\n\t\t\t\t\t\ta { color: #fff; text-decoration: underline; }\n\t\t\t\t\t</style>\n\t\t\t\t\t<h1>Hi! Sorry to interrupt the fireworks.</h1>\n\t\t\t\t\t<p>My name is Caleb. Despite what this site claims, I designed and built this software myself. I\'ve spent a couple hundred hours of my own time, over two years, making it.</p>\n\t\t\t\t\t<p>The owner of this site clearly doesn\'t respect my work, and has labeled it as their own.</p>\n\t\t\t\t\t<p>If you were enjoying the show, please check out <a href="https://codepen.io/MillerTime/full/XgpNwb">my official version here</a>!</p>\n\t\t\t\t\t<p>If you\'re the owner, <a href="mailto:calebdotmiller@gmail.com">contact me</a>.</p>' }, 18e4) } s.stages.push(this), this._listeners = { resize: [], pointerstart: [], pointermove: [], pointerend: [], lastPointerPos: { x: 0, y: 0 } } } return s.stages = [], s.disableHighDPI = !1, s.prototype.addEventListener = function (t, e) { try { "ticker" === t ? i.addListener(e) : this._listeners[t].push(e) } catch (t) { throw "Invalid Event" } }, s.prototype.dispatchEvent = function (t, e) { const i = this._listeners[t]; if (!i) throw "Invalid Event"; i.forEach(t => t.call(this, e)) }, s.prototype.resize = function (t, e) { this.width = t, this.height = e, this.naturalWidth = t * this.dpr, this.naturalHeight = e * this.dpr, this.canvas.width = this.naturalWidth, this.canvas.height = this.naturalHeight, this.canvas.style.width = t + "px", this.canvas.style.height = e + "px", this.dispatchEvent("resize") }, s.windowToCanvas = function (t, e, i) { const n = t.getBoundingClientRect(); return { x: (e - n.left) * (t.width / n.width), y: (i - n.top) * (t.height / n.height) } }, s.mouseHandler = function (t) { if (Date.now() - n < 500) return; let e = "start"; "mousemove" === t.type ? e = "move" : "mouseup" === t.type && (e = "end"), s.stages.forEach(i => { const n = s.windowToCanvas(i.canvas, t.clientX, t.clientY); i.pointerEvent(e, n.x / i.dpr, n.y / i.dpr) }) }, s.touchHandler = function (t) { n = Date.now(); let e = "start"; "touchmove" === t.type ? e = "move" : "touchend" === t.type && (e = "end"), s.stages.forEach(i => { for (let n of Array.from(t.changedTouches)) { let t; "end" !== e ? (t = s.windowToCanvas(i.canvas, n.clientX, n.clientY), i._listeners.lastPointerPos = t, "start" === e && i.pointerEvent("move", t.x / i.dpr, t.y / i.dpr)) : t = i._listeners.lastPointerPos, i.pointerEvent(e, t.x / i.dpr, t.y / i.dpr) } }) }, s.prototype.pointerEvent = function (t, e, i) { const n = { type: t, x: e, y: i }; n.onCanvas = e >= 0 && e <= this.width && i >= 0 && i <= this.height, this.dispatchEvent("pointer" + t, n) }, e.addEventListener("mousedown", s.mouseHandler), e.addEventListener("mousemove", s.mouseHandler), e.addEventListener("mouseup", s.mouseHandler), e.addEventListener("touchstart", s.touchHandler), e.addEventListener("touchmove", s.touchHandler), e.addEventListener("touchend", s.touchHandler), s }(window, document, Ticker);
+	</script>
+	<script>
+		const MyMath = function (n) { const t = {}; return t.toDeg = 180 / n.PI, t.toRad = n.PI / 180, t.halfPI = n.PI / 2, t.twoPI = 2 * n.PI, t.dist = ((t, a) => n.sqrt(t * t + a * a)), t.pointDist = ((t, a, r, o) => { const e = r - t, i = o - a; return n.sqrt(e * e + i * i) }), t.angle = ((a, r) => t.halfPI + n.atan2(r, a)), t.pointAngle = ((a, r, o, e) => t.halfPI + n.atan2(e - r, o - a)), t.splitVector = ((t, a) => ({ x: n.sin(a) * t, y: -n.cos(a) * t })), t.random = ((t, a) => n.random() * (a - t) + t), t.randomInt = ((t, a) => (n.random() * (a - t + 1) | 0) + t), t.randomChoice = function (t) { return 1 === arguments.length && Array.isArray(t) ? t[n.random() * t.length | 0] : arguments[n.random() * arguments.length | 0] }, t.clamp = function (t, a, r) { return n.min(n.max(t, a), r) }, t }(Math);
+	</script>
+	<script>
+		"use strict"; console.clear(); const IS_MOBILE = window.innerWidth <= 640, IS_DESKTOP = window.innerWidth > 800, IS_HEADER = IS_DESKTOP && window.innerHeight < 300, IS_HIGH_END_DEVICE = (() => { const e = navigator.hardwareConcurrency; return !!e && e >= (window.innerWidth <= 1024 ? 4 : 8) })(), MAX_WIDTH = 7680, MAX_HEIGHT = 4320, GRAVITY = .9; let stageW, stageH, simSpeed = 1; function getDefaultScaleFactor() { return IS_MOBILE ? .9 : IS_HEADER ? .75 : 1 } let quality = 1, isLowQuality = !1, isNormalQuality = !0, isHighQuality = !1; const QUALITY_LOW = 1, QUALITY_NORMAL = 2, QUALITY_HIGH = 3, SKY_LIGHT_NONE = 0, SKY_LIGHT_DIM = 1, SKY_LIGHT_NORMAL = 2, COLOR = { Red: "#ff0043", Green: "#14fc56", Blue: "#1e7fff", Purple: "#e60aff", Gold: "#ffbf36", White: "#ffffff" }, INVISIBLE = "_INVISIBLE_", PI_2 = 2 * Math.PI, PI_HALF = .5 * Math.PI, trailsStage = new Stage("trails-canvas"), mainStage = new Stage("main-canvas"), stages = [trailsStage, mainStage]; function fullscreenEnabled() { return fscreen.fullscreenEnabled } function isFullscreen() { return !!fscreen.fullscreenElement } function toggleFullscreen() { fullscreenEnabled() && (isFullscreen() ? fscreen.exitFullscreen() : fscreen.requestFullscreen(document.documentElement)) } fscreen.addEventListener("fullscreenchange", () => { store.setState({ fullscreen: isFullscreen() }) }); const store = { _listeners: new Set, _dispatch(e) { this._listeners.forEach(t => t(this.state, e)) }, state: { paused: !0, soundEnabled: !0, menuOpen: !1, openHelpTopic: null, fullscreen: isFullscreen(), config: { quality: String(IS_HIGH_END_DEVICE ? QUALITY_HIGH : QUALITY_NORMAL), shell: "Random", size: IS_DESKTOP ? "3" : IS_HEADER ? "1.2" : "2", autoLaunch: !0, finale: !0, skyLighting: SKY_LIGHT_NORMAL + "", hideControls: IS_HEADER, longExposure: !1, scaleFactor: getDefaultScaleFactor() } }, setState(e) { const t = this.state; this.state = Object.assign({}, this.state, e), this._dispatch(t), this.persist() }, subscribe(e) { return this._listeners.add(e), () => this._listeners.remove(e) }, load() { const e = localStorage.getItem("cm_fireworks_data"); if (e) { const { schemaVersion: t, data: a } = JSON.parse(e), o = this.state.config; switch (t) { case "1.1": o.quality = a.quality, o.size = a.size, o.skyLighting = a.skyLighting; break; case "1.2": o.quality = a.quality, o.size = a.size, o.skyLighting = a.skyLighting, o.scaleFactor = a.scaleFactor; break; default: throw new Error("version switch should be exhaustive") }console.log(`Loaded config (schema version ${t})`) } else if ("1" === localStorage.getItem("schemaVersion")) { let e; try { const t = localStorage.getItem("configSize"); e = "string" == typeof t && JSON.parse(t) } catch (e) { return console.log("Recovered from error parsing saved config:"), void console.error(e) } const t = parseInt(e, 10); t >= 0 && t <= 4 && (this.state.config.size = String(t)) } }, persist() { const e = this.state.config; localStorage.setItem("cm_fireworks_data", JSON.stringify({ schemaVersion: "1.2", data: { quality: e.quality, size: e.size, skyLighting: e.skyLighting, scaleFactor: e.scaleFactor } })) } }; function togglePause(e) { const t = store.state.paused; let a; t !== (a = "boolean" == typeof e ? e : !t) && store.setState({ paused: a }) } function toggleSound(e) { "boolean" == typeof e ? store.setState({ soundEnabled: e }) : store.setState({ soundEnabled: !store.state.soundEnabled }) } function toggleMenu(e) { "boolean" == typeof e ? store.setState({ menuOpen: e }) : store.setState({ menuOpen: !store.state.menuOpen }) } function updateConfig(e) { e = e || getConfigFromDOM(), store.setState({ config: Object.assign({}, store.state.config, e) }), configDidUpdate() } function configDidUpdate() { store.state.config; quality = qualitySelector(), isLowQuality = quality === QUALITY_LOW, isNormalQuality = quality === QUALITY_NORMAL, isHighQuality = quality === QUALITY_HIGH, skyLightingSelector() === SKY_LIGHT_NONE && (appNodes.canvasContainer.style.backgroundColor = "#000"), Spark.drawWidth = quality === QUALITY_HIGH ? .75 : 1 } IS_HEADER || store.load(); const isRunning = (e = store.state) => !e.paused && !e.menuOpen, soundEnabledSelector = (e = store.state) => e.soundEnabled, canPlaySoundSelector = (e = store.state) => isRunning(e) && soundEnabledSelector(e), qualitySelector = () => +store.state.config.quality, shellNameSelector = () => store.state.config.shell, shellSizeSelector = () => +store.state.config.size, finaleSelector = () => store.state.config.finale, skyLightingSelector = () => +store.state.config.skyLighting, scaleFactorSelector = () => store.state.config.scaleFactor, helpContent = { shellType: { header: "鐑熻姳绫诲瀷", body: "浣犺鏀剧殑鐑熻姳鐨勭被鍨嬶紝閫夋嫨鈥滈殢鏈猴紙Random锛夆€濆彲浠ヨ幏寰楅潪甯稿ソ鐨勪綋楠岋紒" }, shellSize: { header: "鐑熻姳澶у皬", body: "鐑熻姳瓒婂ぇ缁芥斁鑼冨洿灏辫秺澶э紝浣嗘槸鐑熻姳瓒婂ぇ锛岃澶囨墍闇€鐨勬€ц兘涔熶細澧炲锛屽ぇ鐨勭儫鑺卞彲鑳藉鑷翠綘鐨勮澶囧崱椤裤€�" }, quality: { header: "鐢昏川", body: "濡傛灉鍔ㄧ敾杩愯涓嶆祦鐣咃紝浣犲彲浠ヨ瘯璇曢檷浣庣敾璐ㄣ€傜敾璐ㄨ秺楂橈紝鐑熻姳缁芥斁鍚庣殑鐏姳鏁伴噺灏辫秺澶氾紝浣嗛珮鐢昏川鍙兘瀵艰嚧浣犵殑璁惧鍗￠】銆�" }, skyLighting: { header: "鐓т寒澶╃┖", body: "鐑熻姳鐖嗙偢鏃讹紝鑳屾櫙浼氳鐓т寒銆傚鏋滀綘鐨勫睆骞曠湅璧锋潵澶寒浜嗭紝鍙互鎶婂畠鏀规垚鈥滄殫鈥濇垨鑰呪€滀笉鈥濄€�" }, scaleFactor: { header: "缂╂斁", body: "浣夸綘涓庣儫鑺辩寰楁洿杩戞垨鏇磋繙銆傚浜庤緝澶х殑鐑熻姳锛屼綘鍙互閫夋嫨鏇村皬鐨勭缉鏀惧€硷紝灏ゅ叾鏄湪鎵嬫満鎴栧钩鏉跨數鑴戜笂銆�" }, autoLaunch: { header: "鑷姩鏀剧儫鑺�", body: "寮€鍚悗浣犲氨鍙互鍧愬湪浣犵殑璁惧灞忓箷鍓嶉潰娆ｈ祻鐑熻姳浜嗭紝浣犱篃鍙互鍏抽棴瀹冿紝浣嗗叧闂悗浣犲氨鍙兘閫氳繃鐐瑰嚮灞忓箷鐨勬柟寮忔潵鏀剧儫鑺便€�" }, finaleMode: { header: "鍚屾椂鏀炬洿澶氱殑鐑熻姳", body: "鍙互鍦ㄥ悓涓€鏃堕棿鑷姩鏀惧嚭鏇村鐨勭儫鑺憋紙浣嗛渶瑕佸紑鍚厛寮€鍚€滆嚜鍔ㄦ斁鐑熻姳鈥濓級銆�" }, hideControls: { header: "闅愯棌鎺у埗鎸夐挳", body: "闅愯棌灞忓箷椤堕儴鐨勬寜閽€傚鏋滀綘瑕佹埅鍥撅紝鎴栬€呴渶瑕佷竴涓棤缂濈殑浣撻獙锛屼綘灏卞彲浠ュ皢鎸夐挳闅愯棌锛岄殣钘忔寜閽悗浣犱粛鐒跺彲浠ュ湪鍙充笂瑙掓墦寮€璁剧疆銆�" }, fullscreen: { header: "鍏ㄥ睆", body: "鍒囨崲鑷冲叏灞忔ā寮�" }, longExposure: { header: "淇濈暀鐑熻姳鐨勭伀鑺�", body: "鍙互淇濈暀鐑熻姳鐣欎笅鐨勭伀鑺�" } }, nodeKeyToHelpKey = { shellTypeLabel: "shellType", shellSizeLabel: "shellSize", qualityLabel: "quality", skyLightingLabel: "skyLighting", scaleFactorLabel: "scaleFactor", autoLaunchLabel: "autoLaunch", finaleModeLabel: "finaleMode", hideControlsLabel: "hideControls", fullscreenLabel: "fullscreen", longExposureLabel: "longExposure" }, appNodes = { stageContainer: ".stage-container", canvasContainer: ".canvas-container", controls: ".controls", menu: ".menu", menuInnerWrap: ".menu__inner-wrap", pauseBtn: ".pause-btn", pauseBtnSVG: ".pause-btn use", soundBtn: ".sound-btn", soundBtnSVG: ".sound-btn use", shellType: ".shell-type", shellTypeLabel: ".shell-type-label", shellSize: ".shell-size", shellSizeLabel: ".shell-size-label", quality: ".quality-ui", qualityLabel: ".quality-ui-label", skyLighting: ".sky-lighting", skyLightingLabel: ".sky-lighting-label", scaleFactor: ".scaleFactor", scaleFactorLabel: ".scaleFactor-label", autoLaunch: ".auto-launch", autoLaunchLabel: ".auto-launch-label", finaleModeFormOption: ".form-option--finale-mode", finaleMode: ".finale-mode", finaleModeLabel: ".finale-mode-label", hideControls: ".hide-controls", hideControlsLabel: ".hide-controls-label", fullscreenFormOption: ".form-option--fullscreen", fullscreen: ".fullscreen", fullscreenLabel: ".fullscreen-label", longExposure: ".long-exposure", longExposureLabel: ".long-exposure-label", helpModal: ".help-modal", helpModalOverlay: ".help-modal__overlay", helpModalHeader: ".help-modal__header", helpModalBody: ".help-modal__body", helpModalCloseBtn: ".help-modal__close-btn" }; function renderApp(e) { const t = `#icon-${e.paused ? "play" : "pause"}`, a = `#icon-sound-${soundEnabledSelector() ? "on" : "off"}`; if (appNodes.pauseBtnSVG.setAttribute("href", t), appNodes.pauseBtnSVG.setAttribute("xlink:href", t), appNodes.soundBtnSVG.setAttribute("href", a), appNodes.soundBtnSVG.setAttribute("xlink:href", a), appNodes.controls.classList.toggle("hide", e.menuOpen || e.config.hideControls), appNodes.canvasContainer.classList.toggle("blur", e.menuOpen), appNodes.menu.classList.toggle("hide", !e.menuOpen), appNodes.finaleModeFormOption.style.opacity = e.config.autoLaunch ? 1 : .32, appNodes.quality.value = e.config.quality, appNodes.shellType.value = e.config.shell, appNodes.shellSize.value = e.config.size, appNodes.autoLaunch.checked = e.config.autoLaunch, appNodes.finaleMode.checked = e.config.finale, appNodes.skyLighting.value = e.config.skyLighting, appNodes.hideControls.checked = e.config.hideControls, appNodes.fullscreen.checked = e.fullscreen, appNodes.longExposure.checked = e.config.longExposure, appNodes.scaleFactor.value = e.config.scaleFactor.toFixed(2), appNodes.menuInnerWrap.style.opacity = e.openHelpTopic ? .12 : 1, appNodes.helpModal.classList.toggle("active", !!e.openHelpTopic), e.openHelpTopic) { const { header: t, body: a } = helpContent[e.openHelpTopic]; appNodes.helpModalHeader.textContent = t, appNodes.helpModalBody.textContent = a } } function handleStateChange(e, t) { const a = canPlaySoundSelector(e); a !== canPlaySoundSelector(t) && (a ? soundManager.resumeAll() : soundManager.pauseAll()) } function getConfigFromDOM() { return { quality: appNodes.quality.value, shell: appNodes.shellType.value, size: appNodes.shellSize.value, autoLaunch: appNodes.autoLaunch.checked, finale: appNodes.finaleMode.checked, skyLighting: appNodes.skyLighting.value, longExposure: appNodes.longExposure.checked, hideControls: appNodes.hideControls.checked, scaleFactor: parseFloat(appNodes.scaleFactor.value) } } Object.keys(appNodes).forEach(e => { appNodes[e] = document.querySelector(appNodes[e]) }), fullscreenEnabled() || appNodes.fullscreenFormOption.classList.add("remove"), store.subscribe(renderApp), store.subscribe(handleStateChange); const updateConfigNoEvent = () => updateConfig(); appNodes.quality.addEventListener("input", updateConfigNoEvent), appNodes.shellType.addEventListener("input", updateConfigNoEvent), appNodes.shellSize.addEventListener("input", updateConfigNoEvent), appNodes.autoLaunch.addEventListener("click", () => setTimeout(updateConfig, 0)), appNodes.finaleMode.addEventListener("click", () => setTimeout(updateConfig, 0)), appNodes.skyLighting.addEventListener("input", updateConfigNoEvent), appNodes.longExposure.addEventListener("click", () => setTimeout(updateConfig, 0)), appNodes.hideControls.addEventListener("click", () => setTimeout(updateConfig, 0)), appNodes.fullscreen.addEventListener("click", () => setTimeout(toggleFullscreen, 0)), appNodes.scaleFactor.addEventListener("input", () => { updateConfig(), handleResize() }), Object.keys(nodeKeyToHelpKey).forEach(e => { const t = nodeKeyToHelpKey[e]; appNodes[e].addEventListener("click", () => { store.setState({ openHelpTopic: t }) }) }), appNodes.helpModalCloseBtn.addEventListener("click", () => { store.setState({ openHelpTopic: null }) }), appNodes.helpModalOverlay.addEventListener("click", () => { store.setState({ openHelpTopic: null }) }); const COLOR_NAMES = Object.keys(COLOR), COLOR_CODES = COLOR_NAMES.map(e => COLOR[e]), COLOR_CODES_W_INVIS = [...COLOR_CODES, INVISIBLE], COLOR_CODE_INDEXES = COLOR_CODES_W_INVIS.reduce((e, t, a) => (e[t] = a, e), {}), COLOR_TUPLES = {}; function randomColorSimple() { return COLOR_CODES[Math.random() * COLOR_CODES.length | 0] } let lastColor; function randomColor(e) { const t = e && e.notSame, a = e && e.notColor, o = e && e.limitWhite; let l = randomColorSimple(); if (o && l === COLOR.White && Math.random() < .6 && (l = randomColorSimple()), t) for (; l === lastColor;)l = randomColorSimple(); else if (a) for (; l === a;)l = randomColorSimple(); return lastColor = l, l } function whiteOrGold() { return Math.random() < .5 ? COLOR.Gold : COLOR.White } function makePistilColor(e) { return e === COLOR.White || e === COLOR.Gold ? randomColor({ notColor: e }) : whiteOrGold() } COLOR_CODES.forEach(e => { COLOR_TUPLES[e] = { r: parseInt(e.substr(1, 2), 16), g: parseInt(e.substr(3, 2), 16), b: parseInt(e.substr(5, 2), 16) } }); const crysanthemumShell = (e = 1) => { const t = Math.random() < .25, a = Math.random() < .72, o = a ? randomColor({ limitWhite: !0 }) : [randomColor(), randomColor({ notSame: !0 })], l = a && Math.random() < .42, r = l && makePistilColor(o), s = a && (Math.random() < .2 || o === COLOR.White) ? r || randomColor({ notColor: o, limitWhite: !0 }) : null, n = !l && o !== COLOR.White && Math.random() < .42; let i = t ? 1.1 : 1.25; return isLowQuality && (i *= .8), isHighQuality && (i = 1.2), { shellSize: e, spreadSize: 300 + 100 * e, starLife: 900 + 200 * e, starDensity: i, color: o, secondColor: s, glitter: t ? "light" : "", glitterColor: whiteOrGold(), pistil: l, pistilColor: r, streamers: n } }, ghostShell = (e = 1) => { const t = crysanthemumShell(e); t.starLife *= 1.5; let a = randomColor({ notColor: COLOR.White }); t.streamers = !0; Math.random() < .42 && makePistilColor(a); return t.color = INVISIBLE, t.secondColor = a, t.glitter = "", t }, strobeShell = (e = 1) => { const t = randomColor({ limitWhite: !0 }); return { shellSize: e, spreadSize: 280 + 92 * e, starLife: 1100 + 200 * e, starLifeVariation: .4, starDensity: 1.1, color: t, glitter: "light", glitterColor: COLOR.White, strobe: !0, strobeColor: Math.random() < .5 ? COLOR.White : null, pistil: Math.random() < .5, pistilColor: makePistilColor(t) } }, palmShell = (e = 1) => { const t = randomColor(), a = Math.random() < .5; return { shellSize: e, color: t, spreadSize: 250 + 75 * e, starDensity: a ? .15 : .4, starLife: 1800 + 200 * e, glitter: a ? "thick" : "heavy" } }, ringShell = (e = 1) => { const t = randomColor(), a = Math.random() < .75; return { shellSize: e, ring: !0, color: t, spreadSize: 300 + 100 * e, starLife: 900 + 200 * e, starCount: 2.2 * PI_2 * (e + 1), pistil: a, pistilColor: makePistilColor(t), glitter: a ? "" : "light", glitterColor: t === COLOR.Gold ? COLOR.Gold : COLOR.White, streamers: Math.random() < .3 } }, crossetteShell = (e = 1) => { const t = randomColor({ limitWhite: !0 }); return { shellSize: e, spreadSize: 300 + 100 * e, starLife: 750 + 160 * e, starLifeVariation: .4, starDensity: .85, color: t, crossette: !0, pistil: Math.random() < .5, pistilColor: makePistilColor(t) } }, floralShell = (e = 1) => ({ shellSize: e, spreadSize: 300 + 120 * e, starDensity: .12, starLife: 500 + 50 * e, starLifeVariation: .5, color: Math.random() < .65 ? "random" : Math.random() < .15 ? randomColor() : [randomColor(), randomColor({ notSame: !0 })], floral: !0 }), fallingLeavesShell = (e = 1) => ({ shellSize: e, color: INVISIBLE, spreadSize: 300 + 120 * e, starDensity: .12, starLife: 500 + 50 * e, starLifeVariation: .5, glitter: "medium", glitterColor: COLOR.Gold, fallingLeaves: !0 }), willowShell = (e = 1) => ({ shellSize: e, spreadSize: 300 + 100 * e, starDensity: .6, starLife: 3e3 + 300 * e, glitter: "willow", glitterColor: COLOR.Gold, color: INVISIBLE }), crackleShell = (e = 1) => { const t = Math.random() < .75 ? COLOR.Gold : randomColor(); return { shellSize: e, spreadSize: 380 + 75 * e, starDensity: isLowQuality ? .65 : 1, starLife: 600 + 100 * e, starLifeVariation: .32, glitter: "light", glitterColor: COLOR.Gold, color: t, crackle: !0, pistil: Math.random() < .65, pistilColor: makePistilColor(t) } }, horsetailShell = (e = 1) => { const t = randomColor(); return { shellSize: e, horsetail: !0, color: t, spreadSize: 250 + 38 * e, starDensity: .9, starLife: 2500 + 300 * e, glitter: "medium", glitterColor: Math.random() < .5 ? whiteOrGold() : t, strobe: t === COLOR.White } }; function randomShellName() { return Math.random() < .5 ? "Crysanthemum" : shellNames[Math.random() * (shellNames.length - 1) + 1 | 0] } function randomShell(e) { return IS_HEADER ? randomFastShell()(e) : shellTypes[randomShellName()](e) } function shellFromConfig(e) { return shellTypes[shellNameSelector()](e) } const fastShellBlacklist = ["Falling Leaves", "Floral", "Willow"]; function randomFastShell() { const e = "Random" === shellNameSelector(); let t = e ? randomShellName() : shellNameSelector(); if (e) for (; fastShellBlacklist.includes(t);)t = randomShellName(); return shellTypes[t] } const shellTypes = { Random: randomShell, Crackle: crackleShell, Crossette: crossetteShell, Crysanthemum: crysanthemumShell, "Falling Leaves": fallingLeavesShell, Floral: floralShell, Ghost: ghostShell, "Horse Tail": horsetailShell, Palm: palmShell, Ring: ringShell, Strobe: strobeShell, Willow: willowShell }, shellNames = Object.keys(shellTypes); function init() { function e(e, t) { e.innerHTML = t.reduce((e, t) => e += `<option value="${t.value}">${t.label}</option>`, "") } document.querySelector(".loading-init").remove(), appNodes.stageContainer.classList.remove("remove"); let t = ""; shellNames.forEach(e => t += `<option value="${e}">${e}</option>`), appNodes.shellType.innerHTML = t, t = "", ['3"', '4"', '6"', '8"', '12"', '16"'].forEach((e, a) => t += `<option value="${a}">${e}</option>`), appNodes.shellSize.innerHTML = t, e(appNodes.quality, [{ label: "浣�", value: QUALITY_LOW }, { label: "姝ｅ父", value: QUALITY_NORMAL }, { label: "楂�", value: QUALITY_HIGH }]), e(appNodes.skyLighting, [{ label: "涓�", value: SKY_LIGHT_NONE }, { label: "鏆�", value: SKY_LIGHT_DIM }, { label: "姝ｅ父", value: SKY_LIGHT_NORMAL }]), e(appNodes.scaleFactor, [.5, .62, .75, .9, 1, 1.5, 2].map(e => ({ value: e.toFixed(2), label: `${100 * e}%` }))), togglePause(!1), renderApp(store.state), configDidUpdate() } function fitShellPositionInBoundsH(e) { return .64 * e + .18 } function fitShellPositionInBoundsV(e) { return .75 * e } function getRandomShellPositionH() { return fitShellPositionInBoundsH(Math.random()) } function getRandomShellPositionV() { return fitShellPositionInBoundsV(Math.random()) } function getRandomShellSize() { const e = shellSizeSelector(), t = Math.min(2.5, e), a = Math.random() * t, o = e - a, l = 0 === t ? Math.random() : 1 - a / t, r = Math.random() * (1 - .65 * l) * .5; return { size: o, x: fitShellPositionInBoundsH(Math.random() < .5 ? .5 - r : .5 + r), height: fitShellPositionInBoundsV(l) } } function launchShellFromConfig(e) { const t = new Shell(shellFromConfig(shellSizeSelector())), a = mainStage.width, o = mainStage.height; t.launch(e ? e.x / a : getRandomShellPositionH(), e ? 1 - e.y / o : getRandomShellPositionV()) } function seqRandomShell() { const e = getRandomShellSize(), t = new Shell(shellFromConfig(e.size)); t.launch(e.x, e.height); let a = t.starLife; return t.fallingLeaves && (a = 4600), 900 + 600 * Math.random() + a } function seqRandomFastShell() { const e = randomFastShell(), t = getRandomShellSize(), a = new Shell(e(t.size)); a.launch(t.x, t.height); let o = a.starLife; return 900 + 600 * Math.random() + o } function seqTwoRandom() { const e = getRandomShellSize(), t = getRandomShellSize(), a = new Shell(shellFromConfig(e.size)), o = new Shell(shellFromConfig(t.size)), l = .2 * Math.random() - .1, r = .2 * Math.random() - .1; a.launch(.3 + l, e.height), setTimeout(() => { o.launch(.7 + r, t.height) }, 100); let s = Math.max(a.starLife, o.starLife); return (a.fallingLeaves || o.fallingLeaves) && (s = 4600), 900 + 600 * Math.random() + s } function seqTriple() { const e = randomFastShell(), t = shellSizeSelector(), a = Math.max(0, t - 1.25), o = .08 * Math.random() - .04; new Shell(e(t)).launch(.5 + o, .7); const l = 1e3 + 400 * Math.random(), r = 1e3 + 400 * Math.random(); return setTimeout(() => { const t = .08 * Math.random() - .04; new Shell(e(a)).launch(.2 + t, .1) }, l), setTimeout(() => { const t = .08 * Math.random() - .04; new Shell(e(a)).launch(.8 + t, .1) }, r), 4e3 } function seqPyramid() { const e = IS_DESKTOP ? 7 : 4, t = shellSizeSelector(), a = Math.max(0, t - 3), o = Math.random() < .78 ? crysanthemumShell : ringShell, l = randomShell; function r(e, r) { let s = "Random" === shellNameSelector() ? r ? l : o : shellTypes[shellNameSelector()]; const n = e <= .5 ? e / .5 : (1 - e) / .5; new Shell(s(r ? t : a)).launch(e, r ? .75 : .42 * n) } let s = 0, n = 0; for (; s <= e;) { if (s === e) setTimeout(() => { r(.5, !0) }, n); else { const t = s / e * .5, a = 30 * Math.random() + 30; setTimeout(() => { r(t, !1) }, n), setTimeout(() => { r(1 - t, !1) }, n + a) } s++, n += 200 } return 3400 + 250 * e } function seqSmallBarrage() { seqSmallBarrage.lastCalled = Date.now(); const e = IS_DESKTOP ? 11 : 5, t = IS_DESKTOP ? 3 : 1, a = Math.max(0, shellSizeSelector() - 2), o = Math.random() < .78 ? crysanthemumShell : ringShell, l = randomFastShell(); function r(e, t) { let r = "Random" === shellNameSelector() ? t ? l : o : shellTypes[shellNameSelector()]; const s = new Shell(r(a)), n = (Math.cos(5 * e * Math.PI + PI_HALF) + 1) / 2; s.launch(e, .75 * n) } let s = 0, n = 0; for (; s < e;) { if (0 === s) r(.5, !1), s += 1; else { const a = (s + 1) / e / 2, o = 30 * Math.random() + 30, l = s === t; setTimeout(() => { r(.5 + a, l) }, n), setTimeout(() => { r(.5 - a, l) }, n + o), s += 2 } n += 200 } return 3400 + 120 * e } seqSmallBarrage.cooldown = 15e3, seqSmallBarrage.lastCalled = Date.now(); const sequences = [seqRandomShell, seqTwoRandom, seqTriple, seqPyramid, seqSmallBarrage]; let isFirstSeq = !0; const finaleCount = 32; let currentFinaleCount = 0; function startSequence() { if (isFirstSeq) { if (isFirstSeq = !1, IS_HEADER) return seqTwoRandom(); return new Shell(crysanthemumShell(shellSizeSelector())).launch(.5, .5), 2400 } if (finaleSelector()) return seqRandomFastShell(), currentFinaleCount < finaleCount ? (currentFinaleCount++, 170) : (currentFinaleCount = 0, 6e3); const e = Math.random(); return e < .08 && Date.now() - seqSmallBarrage.lastCalled > seqSmallBarrage.cooldown ? seqSmallBarrage() : e < .1 ? seqPyramid() : e < .6 && !IS_HEADER ? seqRandomShell() : e < .8 ? seqTwoRandom() : e < 1 ? seqTriple() : void 0 } let activePointerCount = 0, isUpdatingSpeed = !1; function handlePointerStart(e) { activePointerCount++; if (e.y < 50) { if (e.x < 50) return void togglePause(); if (e.x > mainStage.width / 2 - 25 && e.x < mainStage.width / 2 + 25) return void toggleSound(); if (e.x > mainStage.width - 50) return void toggleMenu() } isRunning() && (updateSpeedFromEvent(e) ? isUpdatingSpeed = !0 : e.onCanvas && launchShellFromConfig(e)) } function handlePointerEnd(e) { activePointerCount--, isUpdatingSpeed = !1 } function handlePointerMove(e) { isRunning() && isUpdatingSpeed && updateSpeedFromEvent(e) } function handleKeydown(e) { 80 === e.keyCode ? togglePause() : 79 === e.keyCode ? toggleMenu() : 27 === e.keyCode && toggleMenu(!1) } function handleResize() { const e = window.innerWidth, t = window.innerHeight, a = Math.min(e, MAX_WIDTH), o = e <= 420 ? t : Math.min(t, MAX_HEIGHT); appNodes.stageContainer.style.width = a + "px", appNodes.stageContainer.style.height = o + "px", stages.forEach(e => e.resize(a, o)); const l = scaleFactorSelector(); stageW = a / l, stageH = o / l } mainStage.addEventListener("pointerstart", handlePointerStart), mainStage.addEventListener("pointerend", handlePointerEnd), mainStage.addEventListener("pointermove", handlePointerMove), window.addEventListener("keydown", handleKeydown), handleResize(), window.addEventListener("resize", handleResize); let currentFrame = 0, speedBarOpacity = 0, autoLaunchTime = 0; function updateSpeedFromEvent(e) { if (isUpdatingSpeed || e.y >= mainStage.height - 44) { const t = 16, a = (e.x - t) / (mainStage.width - 2 * t); return simSpeed = Math.min(Math.max(a, 0), 1), speedBarOpacity = 1, !0 } return !1 } function updateGlobals(e, t) { currentFrame++, isUpdatingSpeed || (speedBarOpacity -= t / 30) < 0 && (speedBarOpacity = 0), store.state.config.autoLaunch && (autoLaunchTime -= e) <= 0 && (autoLaunchTime = 1.25 * startSequence()) } function update(e, t) { if (!isRunning()) return; const a = e * simSpeed, o = simSpeed * t; updateGlobals(a, t); const l = 1 - (1 - Star.airDrag) * o, r = 1 - (1 - Star.airDragHeavy) * o, s = 1 - (1 - Spark.airDrag) * o, n = a / 1e3 * GRAVITY; COLOR_CODES_W_INVIS.forEach(e => { const t = Star.active[e]; for (let e = t.length - 1; e >= 0; e -= 1) { const s = t[e]; if (s.updateFrame !== currentFrame) if (s.updateFrame = currentFrame, s.life -= a, s.life <= 0) t.splice(e, 1), Star.returnInstance(s); else { const i = Math.pow(s.life / s.fullLife, .5), c = 1 - i; if (s.prevX = s.x, s.prevY = s.y, s.x += s.speedX * o, s.y += s.speedY * o, s.heavy ? (s.speedX *= r, s.speedY *= r) : (s.speedX *= l, s.speedY *= l), s.speedY += n, s.spinRadius && (s.spinAngle += s.spinSpeed * o, s.x += Math.sin(s.spinAngle) * s.spinRadius * o, s.y += Math.cos(s.spinAngle) * s.spinRadius * o), s.sparkFreq) for (s.sparkTimer -= a; s.sparkTimer < 0;)s.sparkTimer += .75 * s.sparkFreq + s.sparkFreq * c * 4, Spark.add(s.x, s.y, s.sparkColor, Math.random() * PI_2, Math.random() * s.sparkSpeed * i, .8 * s.sparkLife + Math.random() * s.sparkLifeVariation * s.sparkLife); s.life < s.transitionTime && (s.secondColor && !s.colorChanged && (s.colorChanged = !0, s.color = s.secondColor, t.splice(e, 1), Star.active[s.secondColor].push(s), s.secondColor === INVISIBLE && (s.sparkFreq = 0)), s.strobe && (s.visible = Math.floor(s.life / s.strobeFreq) % 3 == 0)) } } const i = Spark.active[e]; for (let e = i.length - 1; e >= 0; e -= 1) { const t = i[e]; t.life -= a, t.life <= 0 ? (i.splice(e, 1), Spark.returnInstance(t)) : (t.prevX = t.x, t.prevY = t.y, t.x += t.speedX * o, t.y += t.speedY * o, t.speedX *= s, t.speedY *= s, t.speedY += n) } }), render(o) } function render(e) { const { dpr: t } = mainStage, a = stageW, o = stageH, l = trailsStage.ctx, r = mainStage.ctx; skyLightingSelector() !== SKY_LIGHT_NONE && colorSky(e); const s = scaleFactorSelector(); for (l.scale(t * s, t * s), r.scale(t * s, t * s), l.globalCompositeOperation = "source-over", l.fillStyle = `rgba(0, 0, 0, ${store.state.config.longExposure ? .0025 : .175 * e})`, l.fillRect(0, 0, a, o), r.clearRect(0, 0, a, o); BurstFlash.active.length;) { const e = BurstFlash.active.pop(), t = l.createRadialGradient(e.x, e.y, 0, e.x, e.y, e.radius); t.addColorStop(.024, "rgba(255, 255, 255, 1)"), t.addColorStop(.125, "rgba(255, 160, 20, 0.2)"), t.addColorStop(.32, "rgba(255, 140, 20, 0.11)"), t.addColorStop(1, "rgba(255, 120, 20, 0)"), l.fillStyle = t, l.fillRect(e.x - e.radius, e.y - e.radius, 2 * e.radius, 2 * e.radius), BurstFlash.returnInstance(e) } if (l.globalCompositeOperation = "lighten", l.lineWidth = Star.drawWidth, l.lineCap = isLowQuality ? "square" : "round", r.strokeStyle = "#fff", r.lineWidth = 1, r.beginPath(), COLOR_CODES.forEach(e => { const t = Star.active[e]; l.strokeStyle = e, l.beginPath(), t.forEach(e => { e.visible && (l.moveTo(e.x, e.y), l.lineTo(e.prevX, e.prevY), r.moveTo(e.x, e.y), r.lineTo(e.x - 1.6 * e.speedX, e.y - 1.6 * e.speedY)) }), l.stroke() }), r.stroke(), l.lineWidth = Spark.drawWidth, l.lineCap = "butt", COLOR_CODES.forEach(e => { const t = Spark.active[e]; l.strokeStyle = e, l.beginPath(), t.forEach(e => { l.moveTo(e.x, e.y), l.lineTo(e.prevX, e.prevY) }), l.stroke() }), speedBarOpacity) { const e = 6; r.globalAlpha = speedBarOpacity, r.fillStyle = COLOR.Blue, r.fillRect(0, o - e, a * simSpeed, e), r.globalAlpha = 1 } l.setTransform(1, 0, 0, 1, 0, 0), r.setTransform(1, 0, 0, 1, 0, 0) } const currentSkyColor = { r: 0, g: 0, b: 0 }, targetSkyColor = { r: 0, g: 0, b: 0 }; function colorSky(e) { const t = 15 * skyLightingSelector(); let a = 0; targetSkyColor.r = 0, targetSkyColor.g = 0, targetSkyColor.b = 0, COLOR_CODES.forEach(e => { const t = COLOR_TUPLES[e], o = Star.active[e].length; a += o, targetSkyColor.r += t.r * o, targetSkyColor.g += t.g * o, targetSkyColor.b += t.b * o }); const o = Math.pow(Math.min(1, a / 500), .3), l = Math.max(1, targetSkyColor.r, targetSkyColor.g, targetSkyColor.b); targetSkyColor.r = targetSkyColor.r / l * t * o, targetSkyColor.g = targetSkyColor.g / l * t * o, targetSkyColor.b = targetSkyColor.b / l * t * o; currentSkyColor.r += (targetSkyColor.r - currentSkyColor.r) / 10 * e, currentSkyColor.g += (targetSkyColor.g - currentSkyColor.g) / 10 * e, currentSkyColor.b += (targetSkyColor.b - currentSkyColor.b) / 10 * e, appNodes.canvasContainer.style.backgroundColor = `rgb(${0 | currentSkyColor.r}, ${0 | currentSkyColor.g}, ${0 | currentSkyColor.b})` } function createParticleArc(e, t, a, o, l) { const r = t / a, s = e + t - .5 * r; if (s > e) for (let t = e; t < s; t += r)l(t + Math.random() * r * o); else for (let t = e; t > s; t += r)l(t + Math.random() * r * o) } function createBurst(e, t, a = 0, o = PI_2) { const l = 2 * (.5 * Math.sqrt(e / Math.PI)) * Math.PI, r = l / 2; for (let e = 0; e <= r; e++) { const s = e / r * PI_HALF, n = Math.cos(s), i = l * n, c = i * (o / PI_2), d = PI_2 / i, h = Math.random() * d + a, u = .33 * d; for (let e = 0; e < c; e++) { t(d * e + h + Math.random() * u, n) } } } function crossetteEffect(e) { createParticleArc(Math.random() * PI_HALF, PI_2, 4, .5, t => { Star.add(e.x, e.y, e.color, t, .6 * Math.random() + .75, 600) }) } function floralEffect(e) { createBurst(12 + 6 * quality, (t, a) => { Star.add(e.x, e.y, e.color, t, 2.4 * a, 1e3 + 300 * Math.random(), e.speedX, e.speedY) }), BurstFlash.add(e.x, e.y, 46), soundManager.playSound("burstSmall") } function fallingLeavesEffect(e) { createBurst(7, (t, a) => { const o = Star.add(e.x, e.y, INVISIBLE, t, 2.4 * a, 2400 + 600 * Math.random(), e.speedX, e.speedY); o.sparkColor = COLOR.Gold, o.sparkFreq = 144 / quality, o.sparkSpeed = .28, o.sparkLife = 750, o.sparkLifeVariation = 3.2 }), BurstFlash.add(e.x, e.y, 46), soundManager.playSound("burstSmall") } function crackleEffect(e) { createParticleArc(0, PI_2, isHighQuality ? 32 : 16, 1.8, t => { Spark.add(e.x, e.y, COLOR.Gold, t, 2.4 * Math.pow(Math.random(), .45), 300 + 200 * Math.random()) }) } mainStage.addEventListener("ticker", update); class Shell { constructor(e) { if (Object.assign(this, e), this.starLifeVariation = e.starLifeVariation || .125, this.color = e.color || randomColor(), this.glitterColor = e.glitterColor || this.color, !this.starCount) { const t = e.starDensity || 1, a = this.spreadSize / 54; this.starCount = Math.max(6, a * a * t) } } launch(e, t) { const a = stageH - .45 * stageH, o = e * (stageW - 120) + 60, l = stageH, r = l - (a - t * (a - 50)), s = Math.pow(.04 * r, .64), n = this.comet = Star.add(o, l, "string" == typeof this.color && "random" !== this.color ? this.color : COLOR.White, Math.PI, s * (this.horsetail ? 1.2 : 1), s * (this.horsetail ? 100 : 400)); n.heavy = !0, n.spinRadius = MyMath.random(.32, .85), n.sparkFreq = 32 / quality, isHighQuality && (n.sparkFreq = 8), n.sparkLife = 320, n.sparkLifeVariation = 3, ("willow" === this.glitter || this.fallingLeaves) && (n.sparkFreq = 20 / quality, n.sparkSpeed = .5, n.sparkLife = 500), this.color === INVISIBLE && (n.sparkColor = COLOR.Gold), Math.random() > .4 && !this.horsetail && (n.secondColor = INVISIBLE, n.transitionTime = 700 * Math.pow(Math.random(), 1.5) + 500), n.onDeath = (e => this.burst(e.x, e.y)), soundManager.playSound("lift") } burst(e, t) { const a = this.spreadSize / 96; let o, l, r, s, n, i = .25, c = !1; this.crossette && (l = (e => { c || (soundManager.playSound("crackleSmall"), c = !0), crossetteEffect(e) })), this.crackle && (l = (e => { c || (soundManager.playSound("crackle"), c = !0), crackleEffect(e) })), this.floral && (l = floralEffect), this.fallingLeaves && (l = fallingLeavesEffect), "light" === this.glitter ? (r = 400, s = .3, n = 300, i = 2) : "medium" === this.glitter ? (r = 200, s = .44, n = 700, i = 2) : "heavy" === this.glitter ? (r = 80, s = .8, n = 1400, i = 2) : "thick" === this.glitter ? (r = 16, s = isHighQuality ? 1.65 : 1.5, n = 1400, i = 3) : "streamer" === this.glitter ? (r = 32, s = 1.05, n = 620, i = 2) : "willow" === this.glitter && (r = 120, s = .34, n = 1400, i = 3.8), r /= quality; const d = (c, d) => { const h = this.spreadSize / 1800, u = Star.add(e, t, o || randomColor(), c, d * a, this.starLife + Math.random() * this.starLife * this.starLifeVariation, this.horsetail ? this.comet && this.comet.speedX : 0, this.horsetail ? this.comet && this.comet.speedY : -h); this.secondColor && (u.transitionTime = this.starLife * (.05 * Math.random() + .32), u.secondColor = this.secondColor), this.strobe && (u.transitionTime = this.starLife * (.08 * Math.random() + .46), u.strobe = !0, u.strobeFreq = 20 * Math.random() + 40, this.strobeColor && (u.secondColor = this.strobeColor)), u.onDeath = l, this.glitter && (u.sparkFreq = r, u.sparkSpeed = s, u.sparkLife = n, u.sparkLifeVariation = i, u.sparkColor = this.glitterColor, u.sparkTimer = Math.random() * u.sparkFreq) }; if ("string" == typeof this.color) if (o = "random" === this.color ? null : this.color, this.ring) { const l = Math.random() * Math.PI, c = .85 * Math.pow(Math.random(), 2) + .15; createParticleArc(0, PI_2, this.starCount, 0, d => { const h = Math.sin(d) * a * c, u = Math.cos(d) * a, p = MyMath.pointDist(0, 0, h, u), S = MyMath.pointAngle(0, 0, h, u) + l, m = Star.add(e, t, o, S, p, this.starLife + Math.random() * this.starLife * this.starLifeVariation); this.glitter && (m.sparkFreq = r, m.sparkSpeed = s, m.sparkLife = n, m.sparkLifeVariation = i, m.sparkColor = this.glitterColor, m.sparkTimer = Math.random() * m.sparkFreq) }) } else createBurst(this.starCount, d); else { if (!Array.isArray(this.color)) throw new Error("Invalid shell color. Expected string or array of strings, but got: " + this.color); if (Math.random() < .5) { const e = Math.random() * Math.PI, t = e + Math.PI, a = Math.PI; o = this.color[0], createBurst(this.starCount, d, e, a), o = this.color[1], createBurst(this.starCount, d, t, a) } else o = this.color[0], createBurst(this.starCount / 2, d), o = this.color[1], createBurst(this.starCount / 2, d) } if (this.pistil) { new Shell({ spreadSize: .5 * this.spreadSize, starLife: .6 * this.starLife, starLifeVariation: this.starLifeVariation, starDensity: 1.4, color: this.pistilColor, glitter: "light", glitterColor: this.pistilColor === COLOR.Gold ? COLOR.Gold : COLOR.White }).burst(e, t) } if (this.streamers) { new Shell({ spreadSize: .9 * this.spreadSize, starLife: .8 * this.starLife, starLifeVariation: this.starLifeVariation, starCount: Math.floor(Math.max(6, this.spreadSize / 45)), color: COLOR.White, glitter: "streamer" }).burst(e, t) } if (BurstFlash.add(e, t, this.spreadSize / 4), this.comet) { const e = 2, t = .3 * (1 - Math.min(e, shellSizeSelector() - this.shellSize) / e) + .7; soundManager.playSound("burst", t) } } } const BurstFlash = { active: [], _pool: [], _new: () => ({}), add(e, t, a) { const o = this._pool.pop() || this._new(); return o.x = e, o.y = t, o.radius = a, this.active.push(o), o }, returnInstance(e) { this._pool.push(e) } }; function createParticleCollection() { const e = {}; return COLOR_CODES_W_INVIS.forEach(t => { e[t] = [] }), e } const Star = { drawWidth: 3, airDrag: .98, airDragHeavy: .992, active: createParticleCollection(), _pool: [], _new: () => ({}), add(e, t, a, o, l, r, s, n) { const i = this._pool.pop() || this._new(); return i.visible = !0, i.heavy = !1, i.x = e, i.y = t, i.prevX = e, i.prevY = t, i.color = a, i.speedX = Math.sin(o) * l + (s || 0), i.speedY = Math.cos(o) * l + (n || 0), i.life = r, i.fullLife = r, i.spinAngle = Math.random() * PI_2, i.spinSpeed = .8, i.spinRadius = 0, i.sparkFreq = 0, i.sparkSpeed = 1, i.sparkTimer = 0, i.sparkColor = a, i.sparkLife = 750, i.sparkLifeVariation = .25, i.strobe = !1, this.active[a].push(i), i }, returnInstance(e) { e.onDeath && e.onDeath(e), e.onDeath = null, e.secondColor = null, e.transitionTime = 0, e.colorChanged = !1, this._pool.push(e) } }, Spark = { drawWidth: 0, airDrag: .9, active: createParticleCollection(), _pool: [], _new: () => ({}), add(e, t, a, o, l, r) { const s = this._pool.pop() || this._new(); return s.x = e, s.y = t, s.prevX = e, s.prevY = t, s.color = a, s.speedX = Math.sin(o) * l, s.speedY = Math.cos(o) * l, s.life = r, this.active[a].push(s), s }, returnInstance(e) { this._pool.push(e) } }, soundManager = { baseURL: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/", ctx: new (window.AudioContext || window.webkitAudioContext), sources: { lift: { volume: 1, playbackRateMin: .85, playbackRateMax: .95, fileNames: ["lift1.mp3", "lift2.mp3", "lift3.mp3"] }, burst: { volume: 1, playbackRateMin: .8, playbackRateMax: .9, fileNames: ["lift3.mp3", "burst2.mp3"] }, burstSmall: { volume: .25, playbackRateMin: .8, playbackRateMax: 1, fileNames: ["burst-sm-1.mp3", "burst-sm-2.mp3"] }, crackle: { volume: .2, playbackRateMin: 1, playbackRateMax: 1, fileNames: ["crackle1.mp3"] }, crackleSmall: { volume: .3, playbackRateMin: 1, playbackRateMax: 1, fileNames: ["crackle-sm-1.mp3"] } }, preload() { const e = []; function t(e) { if (e.status >= 200 && e.status < 300) return e; const t = new Error(e.statusText); throw t.response = e, t } return Object.keys(this.sources).forEach(a => { const o = this.sources[a], { fileNames: l } = o, r = []; l.forEach(a => { const o = this.baseURL + a, l = fetch(o).then(t).then(e => e.arrayBuffer()).then(e => new Promise(t => { this.ctx.decodeAudioData(e, t) })); r.push(l), e.push(l) }), Promise.all(r).then(e => { o.buffers = e }) }), Promise.all(e) }, pauseAll() { this.ctx.suspend() }, resumeAll() { this.playSound("lift", 0), setTimeout(() => { this.ctx.resume() }, 250) }, _lastSmallBurstTime: 0, playSound(e, t = 1) { if (t = MyMath.clamp(t, 0, 1), !canPlaySoundSelector() || simSpeed < .95) return; if ("burstSmall" === e) { const e = Date.now(); if (e - this._lastSmallBurstTime < 20) return; this._lastSmallBurstTime = e } const a = this.sources[e]; if (!a) throw new Error(`Sound of type "${e}" doesn't exist.`); const o = a.volume * t, l = MyMath.random(a.playbackRateMin, a.playbackRateMax) * (2 - t), r = this.ctx.createGain(); r.gain.value = o; const s = MyMath.randomChoice(a.buffers), n = this.ctx.createBufferSource(); n.playbackRate.value = l, n.buffer = s, n.connect(r), r.connect(this.ctx.destination), n.start(0) } }; function setLoadingStatus(e) { document.querySelector(".loading-init__status").textContent = e } IS_HEADER ? init() : (setLoadingStatus(" "), setTimeout(() => { soundManager.preload().then(init, e => (init(), Promise.reject(e))) }, 0));
+	</script>
+
+	<div style="width:100%;height:100%;position:absolute;">
+    <p id="txt"></p>
+</div>
+
+	<style>
+		#txt {
+    z-index: 0;
+    text-align: center;
+    font-size: 25px;
+    width: 100%;
+    position: absolute;
+    padding: 0;
+    margin: 0px;
+    top: 35%;
+    font-weight: bolder;
+    color: #ffcc41;
+    letter-spacing: 5;
+    opacity: 0.9;
+    white-space: pre-line; /* 改用 pre-line */
+    display: inline-block;
+    -webkit-animation: shine 2.4s infinite;
+}
+
+		@-webkit-keyframes shine {
+
+			/*创建动画*/
+			0%,
+			100% {
+				color: #fff;
+				text-shadow: 0 0 10px #ffcc41, 0 0 10px #ffc118;
+			}
+
+			50% {
+				text-shadow: 0 0 10px rgb(255, 94, 0), 0 0 40px #ffe356;
+			}
+		}
+	</style>
+
+</body>
+
+</html>
